@@ -1,15 +1,17 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            Map
+            Location Tracker
         </ion-title>
-        <ion-buttons end>
-            <button [navPush]="aboutPage">Go To About</button>
-            <button ion-button (click)="addMarker()"><ion-icon name="add"></ion-icon>Add Marker</button>
-        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 <ion-content>
+    <h3>Latitude: {{lat}}</h3>
+    <h3>Longitude: {{lng}}</h3>
+    <h3>Speed : {{speed}} Km/h</h3>
+    <button ion-button  (click)="start()">Start</button>
+    <button ion-button  (click)="stop()">Stop</button>
+    <button ion-button  (click)="reset()">Reset</button>
     <div #map id="map"></div>
 </ion-content>

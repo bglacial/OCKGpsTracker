@@ -3,6 +3,8 @@ import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Geolocation, Geoposition} from '@ionic-native/geolocation';
 import 'rxjs/add/operator/filter';
 
+declare var google;
+
 @Injectable()
 export class LocationTracker {
 
@@ -33,7 +35,7 @@ export class LocationTracker {
             this.zone.run(() => {
                 this.lat = location.latitude;
                 this.lng = location.longitude;
-                this.speed = location.speed;
+                this.speed = location.speed * 3.6;
             });
 
         }, (err) => {
@@ -42,10 +44,7 @@ export class LocationTracker {
 
         });
 
-
-
         // Foreground Tracking
-
         let options = {
             frequency: 1000,
             enableHighAccuracy: true
@@ -54,19 +53,16 @@ export class LocationTracker {
         this.watch = this.geolocation.watchPosition(options).filter((p: any) => p.code === undefined).subscribe((position: Geoposition) => {
 
             console.log(position);
-
             // Run update inside of Angular's zone
             this.zone.run(() => {
                 this.lat = position.coords.latitude;
                 this.lng = position.coords.longitude;
-                this.speed = position.coords.speed;
+                this.speed = position.coords.speed * 3.6;
             });
 
         });
     }
-
     stopTracking() {
-
 
         console.log('stopTracking');
 

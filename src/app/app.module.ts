@@ -3,7 +3,6 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { About } from '../pages/about/about';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LocationTracker } from '../providers/location-tracker';
@@ -13,8 +12,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 @NgModule({
     declarations: [
         MyApp,
-        HomePage,
-        About
+        HomePage
     ],
     imports: [
         IonicModule.forRoot(MyApp),
@@ -23,8 +21,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     bootstrap: [IonicApp],
     entryComponents: [
         MyApp,
-        HomePage,
-        About
+        HomePage
     ],
     providers: [
         LocationTracker,
