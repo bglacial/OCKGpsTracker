@@ -1,19 +1,11 @@
 page-home {
-
-}
-.ios, .md {
-
-  home-page {
-
-    .scroll {
-      height: 100%
-    }
-
-    #map {
-      width: 100%;
+  ion-content {
+    .sms {
       height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-
   }
-
 }
