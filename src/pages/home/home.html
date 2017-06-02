@@ -5,13 +5,27 @@
 </ion-header>
 
 <ion-content padding>
+
+    <ion-refresher (ionRefresh)="reloadSessions($event)">
+        <ion-refresher-content>
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
     <h2>Welcome to Ock gps tracker!</h2>
 
     <p>
         Avec cette application vous pouvez enregistrer vos performances sur circuit
     </p>
     <button ion-button full [navPush]="tabMapActionRoot">Nouvelle session</button>
-    <button ion-button full [navPush]="tabMapActionRoot">Charger une session</button>
-    <button ion-button full (click)="openModal('0:59')">Test modale SMS</button>
-
+    <h4>Charger une session.</h4>
+    <ul>
+        <li *ngFor="let todo of todos; let i=index">{{todo.session_id}} - {{todo.session_date}}
+            <span ion-button (click)="loadSession(todo.session_id)">Charger</span>
+        </li>
+    </ul>
+    <button ion-button full (click)="reloadSessions()">Recharger</button>
 </ion-content>

@@ -1,0 +1,8 @@
+<ion-content>
+    <div #mapLoaded id="mapLoaded"></div>
+    <h4>Liste des coordonées.</h4>
+    <ul>
+        <li *ngFor="let sessionDetail of sessionDetails; let i=index">{{sessionDetail.session_detail_fk_session_id}} - {{sessionDetail.session_detail_coord_lat}} - {{sessionDetail.session_detail_coord_long}} - {{sessionDetail.session_detail_coord_speed}}</li>
+    </ul>
+
+</ion-content>

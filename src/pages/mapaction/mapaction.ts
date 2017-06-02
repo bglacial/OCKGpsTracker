@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, NgZone} from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Geolocation, Geoposition} from '@ionic-native/geolocation';
+import {Sqlite} from '../../providers/sqlite';
 import 'rxjs/add/operator/filter';
 
 declare var google;
@@ -20,7 +21,7 @@ export class MapActionPage {
     @ViewChild('map') mapElement:ElementRef;
     map:any;
 
-    constructor(public navCtrl:NavController, public zone:NgZone, public geolocation:Geolocation, public backgroundGeolocation:BackgroundGeolocation) {
+    constructor(public navCtrl:NavController, public zone:NgZone, public geolocation:Geolocation, public backgroundGeolocation:BackgroundGeolocation, public sqliteService:Sqlite) {
 
     }
 
@@ -55,11 +56,11 @@ export class MapActionPage {
             };
 
             this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-            console.log(this.map);
 
         }, (err) => {
             console.log('Error : ');
-            console.log(err);
+            console.log(err.message);
+            alert('Error map : ' + err.message);
         });
 
     }
@@ -93,6 +94,7 @@ export class MapActionPage {
 
     startTracking() {
 
+        this.sqliteService.addSession();
         // Background Tracking
 
         let config = {
@@ -121,14 +123,19 @@ export class MapActionPage {
 
         // Foreground Tracking
         let options = {
-            frequency: 200,
+            frequency: 100,
             enableHighAccuracy: true
         };
 
         this.watch = this.geolocation.watchPosition(options).filter((p:any) => p.code === undefined).subscribe((position:Geoposition) => {
+            console.log(this.sqliteService.lastSessionId);
 
-            console.log(position);
-
+            if (position.coords.speed == null) {
+                var speed = 0;
+            } else {
+                var speed = parseFloat((position.coords.speed * 3.6).toFixed(2));
+            }
+            this.sqliteService.addSessionDetail(this.sqliteService.lastSessionId, position, speed);
             this.addMarker(position);
             // Run update inside of Angular's zone
             this.zone.run(() => {
