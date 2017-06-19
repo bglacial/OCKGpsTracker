@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, NgZone} from '@angular/core';
 import { NavController,NavParams} from 'ionic-angular';
-import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
-import { Geolocation, Geoposition} from '@ionic-native/geolocation';
+//import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+//import { Geolocation, Geoposition} from '@ionic-native/geolocation';
 import {Sqlite} from '../../providers/sqlite';
 import 'rxjs/add/operator/filter';
 

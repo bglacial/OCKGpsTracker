@@ -99,7 +99,9 @@ export class ModalLoadSession {
 
     @ViewChild('mapLoaded') mapElement:ElementRef;
     mapLoaded:any;
+    poly:any;
 
+    trajectoire = [];
     sessionId;
     sessionDetails = [];
 
@@ -111,49 +113,32 @@ export class ModalLoadSession {
             .then(s => {
                 this.sessionDetails = this.sqliteService.arrSessionDetail;
                 for (var i = 0; i < this.sessionDetails.length; i++) {
-                    this.addMarker(this.sessionDetails[i]);
+                    let latLng = new google.maps.LatLng(this.sessionDetails[i].session_detail_coord_lat, this.sessionDetails[i].session_detail_coord_long);
                     if (i == 0) {
-                        // alert(JSON.stringify(this.sessionDetails[i]));
-                        let latLng = new google.maps.LatLng(this.sessionDetails[i].session_detail_coord_lat, this.sessionDetails[i].session_detail_coord_long);
-
                         let mapOptions = {
                             center: latLng,
-                            zoom: 16,
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                            disableDefaultUI: true,
+                            zoom: 17,
+                            mapTypeId: google.maps.MapTypeId.SATELLITE
                         };
 
                         this.mapLoaded = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+                        this.poly = new google.maps.Polyline({
+                            strokeColor: '#000000',
+                            strokeOpacity: 1.0,
+                            strokeWeight: 5
+                        });
+                        this.poly.setMap(this.mapLoaded);
                     }
-                    alert(JSON.stringify(this.sessionDetails[i]));
+                    var path = this.poly.getPath();
+                    path.push(latLng);
+
+                    // Because path is an MVCArray, we can simply append a new coordinate
+                    // and it will automatically appear.
+                    this.trajectoire.push(latLng);
                 }
+
             });
-
-    }
-
-
-    addMarker(position) {
-
-        let marker = new google.maps.Marker({
-            map: this.mapLoaded,
-            animation: google.maps.Animation.DROP,
-            position: new google.maps.LatLng(position.session_detail_coord_lat, position.session_detail_coord_long)
-        });
-
-    //    let content = "<h4>Vitesse : " + position.session_detail_coord_speed.toFixed(2) + "Km/h </h4>";
-
-      //  this.addInfoWindow(marker, content);
-
-    }
-
-    addInfoWindow(marker, content) {
-
-        let infoWindow = new google.maps.InfoWindow({
-            content: content
-        });
-
-        google.maps.event.addListener(marker, 'click', () => {
-            infoWindow.open(this.mapLoaded, marker);
-        });
 
     }
 
